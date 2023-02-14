@@ -22,7 +22,7 @@ public class Pessoa {
 	private static int contador;
 
 	public Pessoa() {
-		this.id = contador++;
+		this.id = ++contador;
 	}
 
 	public String getNome() {
