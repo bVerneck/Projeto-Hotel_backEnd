@@ -2,3 +2,4 @@
 
 - Willian Pinheiro
 - Renor Guimarães
+- Bruno Verneck
