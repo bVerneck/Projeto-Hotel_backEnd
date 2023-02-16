@@ -1,39 +1,33 @@
 package br.com.tex.hotel.model;
 
 public class Contato {
-	private int telefonePrincipal;
-	private int telefoneAuxiliar;
+	private String telefonePrincipal;
+	private String telefoneAuxiliar;
 	private String email;
-	static int id=1;
+	static Integer id;
 	
-	public void gerarId(){ 
+	public void contato(){ 
 		id++;
 	}
 	
-	
-	
-	
-	public int getTelefonePrincipal(){
+	public String getTelefonePrincipal(){
 		return telefonePrincipal;
 			
 	}
 
-	public void setTelefonePrincipal(int telefonePrincipal) {
+	public void setTelefonePrincipal(String telefonePrincipal) {
 		this.telefonePrincipal =telefonePrincipal;
 	}
 	
 	
 	
-	public int getTelefoneAuxiliar() {
+	public String getTelefoneAuxiliar() {
 		return telefoneAuxiliar;
 	}
 	
-	public void setTelefoneAuxiliar(int telefoneAuxiliar) {
+	public void setTelefoneAuxiliar(String telefoneAuxiliar) {
 		this.telefoneAuxiliar= telefoneAuxiliar;
 	}
-	
-	
-	
 	
 	
 	public String getEmail() {
