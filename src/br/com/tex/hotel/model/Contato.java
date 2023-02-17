@@ -4,10 +4,17 @@ public class Contato {
 	private String telefonePrincipal;
 	private String telefoneAuxiliar;
 	private String email;
-	static Integer id;
+	private Integer id;
+	
+	private static int contador;
 	
 	public void contato(){ 
-		id++;
+		this.id = ++contador;
+	}
+	
+	public Integer getId() {
+		return id;
+		
 	}
 	
 	public String getTelefonePrincipal(){
