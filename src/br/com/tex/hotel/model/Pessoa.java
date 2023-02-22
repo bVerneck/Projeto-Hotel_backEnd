@@ -22,6 +22,8 @@ public class Pessoa {
 	private static int contador;
 
 	public Pessoa() {
+		System.out.println(this.id);
+		System.out.println(contador);
 		this.id = ++contador;
 	}
 
@@ -39,7 +41,7 @@ public class Pessoa {
 
 	public void setCpf(String cpf) throws ExeptionUtil, Exception {
 		if (!ValidaCPF.cpfValido(cpf)) {
-			throw new ExeptionUtil("CPF inválido");
+			throw new ExeptionUtil("CPF inválido!");
 		} else {
 			this.cpf = cpf;
 		}
