@@ -1,22 +1,32 @@
 package br.com.tex.hotel.model;
 
+import java.util.Objects;
+
 /**
  * 
  * @author renor
  *
  */
 public class Acomodacao {
-	private double id;
+	private Integer id;
 	private String nomeAcomodacao;
 	private double valorAdulto;
 	private double valorCrianca;
 	private boolean quartoLivre;
 	private double tamanhoQuarto;
 	private String descricaoQuarto;
-	public double getId() {
-		return id;
+	
+	
+	private static int contador;
+	
+	public Acomodacao() {
+		this.id = ++contador;
 	}
 	
+	
+	public Integer getId() {
+		return id;
+	}
 	public String getNomeAcomodacao() {
 		return nomeAcomodacao;
 	}
@@ -53,12 +63,34 @@ public class Acomodacao {
 	public void setDescricaoQuarto(String descricaoQuarto) {
 		this.descricaoQuarto = descricaoQuarto;
 	}
-	
-	// métodos
-	
-	public void Cadastrar() {
-		
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Acomodacao other = (Acomodacao) obj;
+		return Double.doubleToLongBits(id) == Double.doubleToLongBits(other.id);
+	}
+
+	@Override
+	public String toString() {
+		return "Acomodacao [id=" + id + ", nomeAcomodacao=" + nomeAcomodacao + ", valorAdulto=" + valorAdulto
+				+ ", valorCrianca=" + valorCrianca + ", quartoLivre=" + quartoLivre + ", tamanhoQuarto=" + tamanhoQuarto
+				+ ", descricaoQuarto=" + descricaoQuarto + "]";
 	}
 	
+	
+
+	
+
 
 }
