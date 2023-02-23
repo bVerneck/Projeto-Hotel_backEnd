@@ -3,3 +3,4 @@
 - Willian Pinheiro
 - Renor Guimarães
 - Bruno Verneck
+- Raylan Medeiros
