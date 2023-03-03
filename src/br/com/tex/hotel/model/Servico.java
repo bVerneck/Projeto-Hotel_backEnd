@@ -14,36 +14,30 @@ public class Servico {
 	private String servico;
 	private BigDecimal preco;
 
-	private static int count;
-
 	public Servico() {
-		this.id = ++count;
 	}
 
 	public Servico(String servico, BigDecimal preco) {
-		this.id = ++count;
 		this.servico = servico;
 		this.preco = preco;
+	}
+
+	public Servico(Integer id, String servico, BigDecimal preco) {
+		this.id = id;
+		this.servico = servico;
+		this.preco = preco;
+	}
+
+	public Integer getId() {
+		return id;
 	}
 
 	public String getServico() {
 		return servico;
 	}
 
-	public void setServico(String servico) {
-		this.servico = servico;
-	}
-
 	public BigDecimal getPreco() {
 		return preco;
-	}
-
-	public void setPreco(BigDecimal preco) {
-		this.preco = preco;
-	}
-
-	public Integer getId() {
-		return id;
 	}
 
 	@Override
@@ -65,10 +59,7 @@ public class Servico {
 
 	@Override
 	public String toString() {
-		final StringBuilder sb = new StringBuilder();
-		sb.append("Servico {").append("id=").append(id).append(", servico='").append(servico).append("', preco=")
-				.append(preco).append("}");
-		return sb.toString();
+		return "Servico [id=" + id + ", servico=" + servico + ", preco=" + preco + "]";
 	}
 
 }

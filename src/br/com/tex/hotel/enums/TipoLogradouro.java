@@ -1,5 +1,10 @@
 package br.com.tex.hotel.enums;
 
+/**
+ * 
+ * @author willian
+ *
+ */
 public enum TipoLogradouro {
 	RUA("Rua"),
 	AVENIDA("Avenida"),

@@ -1,5 +1,6 @@
 package br.com.tex.hotel.model;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -10,58 +11,66 @@ import java.util.Objects;
 public class Acomodacao {
 	private Integer id;
 	private String nomeAcomodacao;
-	private double valorAdulto;
-	private double valorCrianca;
+	private BigDecimal valorAdulto;
+	private BigDecimal valorCrianca;
 	private boolean quartoLivre;
-	private double tamanhoQuarto;
-	private String descricaoQuarto;
-	
-	
-	private static int contador;
-	
+	private BigDecimal tamanhoQuarto;
+	private Hotel hotel;
+
 	public Acomodacao() {
-		this.id = ++contador;
 	}
-	
-	
-	public Integer getId() {
-		return id;
-	}
-	public String getNomeAcomodacao() {
-		return nomeAcomodacao;
-	}
-	public void setNomeAcomodacao(String nomeAcomodacao) {
+
+	public Acomodacao(String nomeAcomodacao, BigDecimal valorAdulto, BigDecimal valorCrianca, boolean quartoLivre,
+			BigDecimal tamanhoQuarto, Hotel hotel) {
 		this.nomeAcomodacao = nomeAcomodacao;
-	}
-	public double getValorAdulto() {
-		return valorAdulto;
-	}
-	public void setValorAdulto(double valorAdulto) {
 		this.valorAdulto = valorAdulto;
-	}
-	public double getValorCrianca() {
-		return valorCrianca;
-	}
-	public void setValorCrianca(double valorCrianca) {
 		this.valorCrianca = valorCrianca;
+		this.quartoLivre = quartoLivre;
+		this.tamanhoQuarto = tamanhoQuarto;
+		this.hotel = hotel;
 	}
+
+	public Acomodacao(Integer id, String nomeAcomodacao, BigDecimal valorAdulto, BigDecimal valorCrianca,
+			boolean quartoLivre, BigDecimal tamanhoQuarto, Hotel hotel) {
+		this.id = id;
+		this.nomeAcomodacao = nomeAcomodacao;
+		this.valorAdulto = valorAdulto;
+		this.valorCrianca = valorCrianca;
+		this.quartoLivre = quartoLivre;
+		this.tamanhoQuarto = tamanhoQuarto;
+		this.hotel = hotel;
+	}
+
 	public boolean isQuartoLivre() {
 		return quartoLivre;
 	}
+
 	public void setQuartoLivre(boolean quartoLivre) {
 		this.quartoLivre = quartoLivre;
 	}
-	public double getTamanhoQuarto() {
+
+	public Integer getId() {
+		return id;
+	}
+
+	public String getNomeAcomodacao() {
+		return nomeAcomodacao;
+	}
+
+	public BigDecimal getValorAdulto() {
+		return valorAdulto;
+	}
+
+	public BigDecimal getValorCrianca() {
+		return valorCrianca;
+	}
+
+	public BigDecimal getTamanhoQuarto() {
 		return tamanhoQuarto;
 	}
-	public void setTamanhoQuarto(double tamanhoQuarto) {
-		this.tamanhoQuarto = tamanhoQuarto;
-	}
-	public String getDescricaoQuarto() {
-		return descricaoQuarto;
-	}
-	public void setDescricaoQuarto(String descricaoQuarto) {
-		this.descricaoQuarto = descricaoQuarto;
+
+	public Hotel getHotel() {
+		return hotel;
 	}
 
 	@Override
@@ -85,12 +94,7 @@ public class Acomodacao {
 	public String toString() {
 		return "Acomodacao [id=" + id + ", nomeAcomodacao=" + nomeAcomodacao + ", valorAdulto=" + valorAdulto
 				+ ", valorCrianca=" + valorCrianca + ", quartoLivre=" + quartoLivre + ", tamanhoQuarto=" + tamanhoQuarto
-				+ ", descricaoQuarto=" + descricaoQuarto + "]";
+				+ "]";
 	}
-	
-	
-
-	
-
 
 }
