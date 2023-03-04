@@ -13,7 +13,9 @@ import br.com.tex.hotel.model.Cliente;
 
 public class ClienteDAO {
 
-	public void inserir(Cliente c) throws SQLException {
+	public void inserir(Cliente cliente) throws SQLException {
+		
+		
 		Connection conexao = FactoryConnetion.getConnection();
 
 		String sql = "INSERT INTO cliente (nome, cpf, dataNascimento,"
@@ -21,12 +23,12 @@ public class ClienteDAO {
 				+ " VALUES(?, ?, ?, ?, ?, ?)";
 		PreparedStatement statement = conexao.prepareStatement(sql);
 
-		statement.setString(1, c.getNome());
-		statement.setString(2, c.getCpf());
-		statement.setDate(3, Date.valueOf(c.getDataNascimento()));
-		statement.setInt(4, c.getContato().getId());
-		statement.setInt(5, c.getEndereco().getId());
-		statement.setInt(6, c.getReservas().get(0).getId()); //precisa modificar.
+		statement.setString(1, cliente.getNome());
+		statement.setString(2, cliente.getCpf());
+		statement.setDate(3, Date.valueOf(cliente.getDataNascimento()));
+		statement.setInt(4, cliente.getContato().getId());
+		statement.setInt(5, cliente.getEndereco().getId());
+		statement.setInt(6, cliente.getReservas().get(0).getId()); //precisa modificar.
 
 		statement.execute();
 
@@ -34,19 +36,19 @@ public class ClienteDAO {
 		conexao.close();
 	}
 
-	public void alterar(Cliente c) throws SQLException {
+	public void alterar(Cliente cliente) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 		String sql = "UPDATE funcionario SET matricula= ?, nome= ?, cpf= ?, salario= ?, dataNascimento= ?,"
 				+ " hotel_id_hotel= ?, endereco_id_endereco= ?, contato_id_contato= ? WHERE id_funcionario= ?";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 
-		statement.setString(1, c.getNome());
-		statement.setString(2, c.getCpf());
-		statement.setDate(3, Date.valueOf(c.getDataNascimento()));
-		statement.setInt(4, c.getContato().getId());
-		statement.setInt(5, c.getEndereco().getId());
-		statement.setInt(6, c.getReservas().get(0).getId()); //precisa modificar.
+		statement.setString(1, cliente.getNome());
+		statement.setString(2, cliente.getCpf());
+		statement.setDate(3, Date.valueOf(cliente.getDataNascimento()));
+		statement.setInt(4, cliente.getContato().getId());
+		statement.setInt(5, cliente.getEndereco().getId());
+		statement.setInt(6, cliente.getReservas().get(0).getId()); //precisa modificar.
 
 		statement.execute();
 
@@ -54,13 +56,13 @@ public class ClienteDAO {
 		conexao.close();
 	}
 
-	public void delete(Cliente c) throws SQLException {
+	public void delete(Cliente cliente) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 		String sql = "DELETE FROM cliente WHERE id_cliente=?";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 
-		statement.setInt(1, c.getId());
+		statement.setInt(1, cliente.getId());
 		statement.execute();
 
 		statement.close();
@@ -75,17 +77,17 @@ public class ClienteDAO {
 
 		ResultSet rs = statement.executeQuery();
 
-		Cliente c = null;
+		Cliente cliente = null;
 
 		while (rs.next()) {
-			c = new Cliente(rs.getString("nome"),
+			cliente = new Cliente(rs.getString("nome"),
 					rs.getString("cpf"),
 					rs.getDate("dataNascimento").toLocalDate(),
 					new ContatoDAO().getById(rs.getInt("contato_id_contato")),
 					new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")));
 		}
 
-		return c;
+		return cliente;
 	}
 
 	public List<Cliente> listAllFuncionario() throws SQLException {
@@ -98,13 +100,13 @@ public class ClienteDAO {
 		List<Cliente> clientes= new ArrayList<>();
 
 		while (rs.next()) {
-			Cliente c = new Cliente(rs.getInt("id_cliente"),
+			Cliente cliente = new Cliente(rs.getInt("id_cliente"),
 					rs.getString("nome"), rs.getString("cpf"),
 					rs.getDate("dataNascimento").toLocalDate(),
 					new ContatoDAO().getById(rs.getInt("contato_id_contato")),
 					new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")));
 
-			clientes.add(c);
+			clientes.add(cliente);
 		}
 
 		return clientes;

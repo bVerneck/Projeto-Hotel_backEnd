@@ -14,22 +14,22 @@ import br.com.tex.hotel.model.Endereco;
 
 public class EnderecoDAO {
 
-	public void inserir(Endereco e) throws SQLException {
+	public void inserir(Endereco endereco) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 
 		String sql = "INSERT INTO endereco (tipoLogradouro, logradouro, numeroResidencial,"
 				+ " complemento, bairro, cidade," + " estado, pais, cep) " + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement statement = conexao.prepareStatement(sql);
 
-		statement.setString(1, e.getTipoLogradouro().getDescricao());
-		statement.setString(2, e.getLogradouro());
-		statement.setInt(3, e.getNumeroResidencial());
-		statement.setString(4, e.getComplemento());
-		statement.setString(5, e.getBairro());
-		statement.setString(6, e.getCidade());
-		statement.setString(7, e.getEstado().getNome());
-		statement.setString(8, e.getPais());
-		statement.setString(9, e.getCep());
+		statement.setString(1, endereco.getTipoLogradouro().getDescricao());
+		statement.setString(2, endereco.getLogradouro());
+		statement.setInt(3, endereco.getNumeroResidencial());
+		statement.setString(4, endereco.getComplemento());
+		statement.setString(5, endereco.getBairro());
+		statement.setString(6, endereco.getCidade());
+		statement.setString(7, endereco.getEstado().getNome());
+		statement.setString(8, endereco.getPais());
+		statement.setString(9, endereco.getCep());
 
 		statement.execute();
 
@@ -37,7 +37,7 @@ public class EnderecoDAO {
 		conexao.close();
 	}
 
-	public void alterar(Endereco e) throws SQLException {
+	public void alterar(Endereco endereco) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 
 		String sql = "UPDATE endereco SET tipoLogradouro= ?, logradouro= ?, numeroResidencial= ?,"
@@ -45,16 +45,16 @@ public class EnderecoDAO {
 				+ "";
 		PreparedStatement statement = conexao.prepareStatement(sql);
 
-		statement.setString(1, e.getTipoLogradouro().getDescricao());
-		statement.setString(2, e.getLogradouro());
-		statement.setInt(3, e.getNumeroResidencial());
-		statement.setString(4, e.getComplemento());
-		statement.setString(5, e.getBairro());
-		statement.setString(6, e.getCidade());
-		statement.setString(7, e.getEstado().getNome());
-		statement.setString(8, e.getPais());
-		statement.setString(9, e.getCep());
-		statement.setInt(10, e.getId());
+		statement.setString(1, endereco.getTipoLogradouro().getDescricao());
+		statement.setString(2, endereco.getLogradouro());
+		statement.setInt(3, endereco.getNumeroResidencial());
+		statement.setString(4, endereco.getComplemento());
+		statement.setString(5, endereco.getBairro());
+		statement.setString(6, endereco.getCidade());
+		statement.setString(7, endereco.getEstado().getNome());
+		statement.setString(8, endereco.getPais());
+		statement.setString(9, endereco.getCep());
+		statement.setInt(10, endereco.getId());
 
 		statement.execute();
 
@@ -62,13 +62,13 @@ public class EnderecoDAO {
 		conexao.close();
 	}
 
-	public void delete(Endereco e) throws SQLException {
+	public void delete(Endereco endereco) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 		String sql = "DELETE FROM endereco WHERE id_endereco= ?";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 
-		statement.setInt(1, e.getId());
+		statement.setInt(1, endereco.getId());
 
 		statement.execute();
 
@@ -87,7 +87,7 @@ public class EnderecoDAO {
 		Endereco endereco = null;
 
 		while (rs.next()) {
-			endereco = new Endereco(id,
+			 endereco = new Endereco(id,
 					TipoLogradouro.valueOf(TipoLogradouro.class, rs.getString("tipoLogradouro")),
 					rs.getString("logradouro"),
 					rs.getInt("numeroResidencial"),
