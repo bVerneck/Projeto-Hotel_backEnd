@@ -12,15 +12,15 @@ import br.com.tex.hotel.model.Hotel;
 
 public class HotelDAO {
 
-	public void inserir(Hotel h) throws SQLException {
+	public void inserir(Hotel hotel) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 
 		String sql = "INSERT INTO hotel (nome, contato_id_contato, endereco_id_endereco) VALUES(?, ?, ?)";
 		PreparedStatement statement = conexao.prepareStatement(sql);
 
-		statement.setString(1, h.getNome());
-		statement.setInt(2, h.getContato().getId());
-		statement.setInt(3, h.getEndereco().getId());
+		statement.setString(1, hotel.getNome());
+		statement.setInt(2, hotel.getContato().getId());
+		statement.setInt(3, hotel.getEndereco().getId());
 
 		statement.execute();
 
@@ -28,16 +28,16 @@ public class HotelDAO {
 		conexao.close();
 	}
 
-	public void alterar(Hotel h) throws SQLException {
+	public void alterar(Hotel hotel) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 		String sql = "UPDATE hotel SET nome=?, contato_id_contato=?, endereco_id_endereco=? WHERE id_hotel=?";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 
-		statement.setString(1, h.getNome());
-		statement.setInt(2, h.getContato().getId());
-		statement.setInt(3, h.getEndereco().getId());
-		statement.setInt(4, h.getId());
+		statement.setString(1, hotel.getNome());
+		statement.setInt(2, hotel.getContato().getId());
+		statement.setInt(3, hotel.getEndereco().getId());
+		statement.setInt(4, hotel.getId());
 
 		statement.execute();
 
@@ -45,13 +45,13 @@ public class HotelDAO {
 		conexao.close();
 	}
 
-	public void delete(Hotel h) throws SQLException {
+	public void delete(Hotel hotel) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 		String sql = "DELETE FROM hotel WHERE id_hotel=?";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 
-		statement.setInt(1, h.getId());
+		statement.setInt(1, hotel.getId());
 		statement.execute();
 
 		statement.close();
@@ -66,15 +66,15 @@ public class HotelDAO {
 
 		ResultSet rs = statement.executeQuery();
 
-		Hotel h = null;
+		Hotel hotel = null;
 
 		while (rs.next()) {
-			h = new Hotel(rs.getString("nome"),
+			hotel = new Hotel(rs.getString("nome"),
 					new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
 					new ContatoDAO().getById(rs.getInt("contato_id_contato")));
 		}
 
-		return h;
+		return hotel;
 	}
 
 	public List<Hotel> listAllHotel() throws SQLException {
@@ -87,7 +87,7 @@ public class HotelDAO {
 		List<Hotel> hoteis = new ArrayList<>();
 
 		while (rs.next()) {
-			Hotel h = new Hotel(rs.getInt("id_hotel"),
+			Hotel hotel = new Hotel(rs.getInt("id_hotel"),
 					rs.getString("nome"),
 					new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
 					new ContatoDAO().getById(rs.getInt("contato_id_contato")));
