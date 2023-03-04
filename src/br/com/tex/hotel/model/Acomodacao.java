@@ -30,6 +30,15 @@ public class Acomodacao {
 		this.hotel = hotel;
 	}
 
+	public Acomodacao(String nomeAcomodacao, BigDecimal valorAdulto, BigDecimal valorCrianca, boolean quartoLivre,
+			BigDecimal tamanhoQuarto) {
+		this.nomeAcomodacao = nomeAcomodacao;
+		this.valorAdulto = valorAdulto;
+		this.valorCrianca = valorCrianca;
+		this.quartoLivre = quartoLivre;
+		this.tamanhoQuarto = tamanhoQuarto;
+	}
+
 	public Acomodacao(Integer id, String nomeAcomodacao, BigDecimal valorAdulto, BigDecimal valorCrianca,
 			boolean quartoLivre, BigDecimal tamanhoQuarto, Hotel hotel) {
 		this.id = id;

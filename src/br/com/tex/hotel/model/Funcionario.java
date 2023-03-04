@@ -18,12 +18,13 @@ public class Funcionario {
 	private BigDecimal salario;
 	private Contato contato;
 	private Endereco endereco;
+	private Hotel hotel;
 
 	public Funcionario() {
 	}
 
 	public Funcionario(Integer matricula, String nome, String cpf, LocalDate dataNascimento, BigDecimal salario,
-			Contato contato, Endereco endereco) {
+			Contato contato, Endereco endereco, Hotel hotel) {
 		this.matricula = matricula;
 		this.nome = nome;
 		this.cpf = cpf;
@@ -31,11 +32,25 @@ public class Funcionario {
 		this.salario = salario;
 		this.contato = contato;
 		this.endereco = endereco;
+		this.hotel = hotel;
 	}
 
 	public Funcionario(Integer id, Integer matricula, String nome, String cpf, LocalDate dataNascimento,
-			BigDecimal salario, Contato contato, Endereco endereco) {
+			BigDecimal salario, Contato contato, Endereco endereco, Hotel hotel) {
 		this.id = id;
+		this.matricula = matricula;
+		this.nome = nome;
+		this.cpf = cpf;
+		this.dataNascimento = dataNascimento;
+		this.salario = salario;
+		this.contato = contato;
+		this.endereco = endereco;
+		this.hotel = hotel;
+	}
+
+	public Funcionario(Integer matricula, String nome, String cpf, LocalDate dataNascimento, BigDecimal salario,
+			Contato contato, Endereco endereco) {
+		super();
 		this.matricula = matricula;
 		this.nome = nome;
 		this.cpf = cpf;
@@ -77,6 +92,10 @@ public class Funcionario {
 		return endereco;
 	}
 
+	public Hotel getHotel() {
+		return hotel;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(cpf);
@@ -97,7 +116,7 @@ public class Funcionario {
 	@Override
 	public String toString() {
 		return "Funcionario [id=" + id + ", matricula=" + matricula + ", nome=" + nome + ", cpf=" + cpf
-				+ ", dataNascimento=" + dataNascimento + ", salario=" + salario + "]";
+				+ ", dataNascimento=" + dataNascimento + ", salario=" + salario + ", hotel=" + hotel.getId() + "]";
 	}
 
 }
