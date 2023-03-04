@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.tex.hotel.base.FactoryConnetion;
 import br.com.tex.hotel.model.Contato;
@@ -49,7 +51,7 @@ public class ContatoDAO {
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 
-		statement.setString(1, contato.getTelefonePrincipal());
+		statement.setInt(1, contato.getId());
 		statement.execute();
 
 		statement.close();
@@ -67,10 +69,33 @@ public class ContatoDAO {
 		Contato contato = null;
 
 		while (rs.next()) {
-			contato = new Contato(rs.getString("telefonePrincipal"), rs.getString("telefoneAuxiliar"),
-					rs.getString("email"), rs.getInt("id_contato"));
+			contato = new Contato(rs.getString("telefonePrincipal"),
+					rs.getString("telefoneAuxiliar"),
+					rs.getString("email"),
+					rs.getInt("id_contato"));
 		}
 
 		return contato;
+	}
+
+	public List<Contato> listAllContato() throws SQLException {
+		Connection conexao = FactoryConnetion.getConnection();
+		String sql = "SELECT * from contato";
+		PreparedStatement statement = conexao.prepareStatement(sql);
+
+		ResultSet rs = statement.executeQuery();
+
+		List<Contato> contatos = new ArrayList<>();
+
+		while (rs.next()) {
+			Contato contato = new Contato(rs.getString("telefonePrincipal"),
+					rs.getString("telefoneAuxiliar"),
+					rs.getString("email"),
+					rs.getInt("id_contato"));
+
+			contatos.add(contato);
+		}
+
+		return contatos;
 	}
 }
