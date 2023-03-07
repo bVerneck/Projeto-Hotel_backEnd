@@ -1,6 +1,7 @@
 package br.com.tex.hotel.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,19 +9,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.tex.hotel.base.FactoryConnetion;
-import br.com.tex.hotel.model.Contato;
+import br.com.tex.hotel.model.Reserva;
 
 public class ReservaDAO {
 
-//	public void inserir(Contato contato) throws SQLException {
+//	public void inserir(Reserva r) throws SQLException {
 //		Connection conexao = FactoryConnetion.getConnection();
 //
-//		String sql = "INSERT INTO contato (telefonePrincipal, telefoneAuxiliar, email) VALUES(?, ?, ?)";
+//		String sql = "INSERT INTO reserva (dataCheckin, dataCheckout, quantidadeAdulto,"
+//				+ " quantidadeCrianca, acomodacao_id_acomodacao)"
+//				+ " VALUES(?, ?, ?, ?, ?)";
 //		PreparedStatement statement = conexao.prepareStatement(sql);
 //
-//		statement.setString(1, contato.getTelefonePrincipal());
-//		statement.setString(2, contato.getTelefoneAuxiliar());
-//		statement.setString(3, contato.getEmail());
+//		statement.setDate(1, Date.valueOf(r.getDataCheckIn()));
+//		statement.setDate(2, Date.valueOf(r.getDataCheckOut()));
+//		statement.setInt(3, r.getQuantHospedeAdulto());
+//		statement.setInt(4, r.getQuantHospedeAteOitoAnos());
+//		statement.setInt(5, r.getQuarto().getId());
 //
 //		statement.execute();
 //
@@ -28,16 +33,20 @@ public class ReservaDAO {
 //		conexao.close();
 //	}
 //
-//	public void alterar(Contato contato) throws SQLException {
+//	public void alterar(Reserva r) throws SQLException {
 //		Connection conexao = FactoryConnetion.getConnection();
-//		String sql = "UPDATE contato SET telefonePrincipal=?, telefoneAuxiliar=?, email=? WHERE id_contato=?";
+//		String sql = "UPDATE reserva SET dataCheckin=?, dataCheckout=?, quantidadeAdulto=?,"
+//				+ " quantidadeCrianca=?, acomodacao_id_acomodacao=?"
+//				+ " WHERE id_reserva=?";
 //
 //		PreparedStatement statement = conexao.prepareStatement(sql);
-//
-//		statement.setString(1, contato.getTelefonePrincipal());
-//		statement.setString(2, contato.getTelefoneAuxiliar());
-//		statement.setString(3, contato.getEmail());
-//		statement.setInt(4, contato.getId());
+//		
+//		statement.setDate(1, Date.valueOf(r.getDataCheckIn()));
+//		statement.setDate(2, Date.valueOf(r.getDataCheckOut()));
+//		statement.setInt(3, r.getQuantHospedeAdulto());
+//		statement.setInt(4, r.getQuantHospedeAteOitoAnos());
+//		statement.setInt(5, r.getQuarto().getId());
+//		statement.setInt(6, r.getId());
 //
 //		statement.execute();
 //
@@ -45,40 +54,46 @@ public class ReservaDAO {
 //		conexao.close();
 //	}
 //
-//	public void delete(Contato contato) throws SQLException {
+//	public void delete(Reserva r) throws SQLException {
 //		Connection conexao = FactoryConnetion.getConnection();
-//		String sql = "DELETE FROM contato WHERE id_contato=?";
+//		String sql = "DELETE FROM reserva WHERE id_reserva=?";
 //
 //		PreparedStatement statement = conexao.prepareStatement(sql);
 //
-//		statement.setInt(1, contato.getId());
+//		statement.setInt(1, r.getId());
 //		statement.execute();
 //
 //		statement.close();
 //		conexao.close();
 //	}
 //
-//	public Contato getById(Integer id) throws SQLException {
+//	public Reserva getById(Integer id) throws SQLException {
 //		Connection conexao = FactoryConnetion.getConnection();
-//		String sql = "SELECT * from contato WHERE id_contato=?";
+//		String sql = "SELECT * from reserva WHERE id_reserva=?";
 //		PreparedStatement statement = conexao.prepareStatement(sql);
 //		statement.setInt(1, id);
 //
 //		ResultSet rs = statement.executeQuery();
 //
-//		Contato contato = null;
+//		Reserva r = null;
 //
 //		while (rs.next()) {
-//			contato = new Contato(rs.getString("telefonePrincipal"),
-//					rs.getString("telefoneAuxiliar"),
-//					rs.getString("email"),
-//					rs.getInt("id_contato"));
+//			r = new Reserva(rs.getInt("id_reserva"),
+//					rs.getDate("dataCheckin").toLocalDate(),
+//					rs.getDate("dataCheckout").toLocalDate(),
+//					rs.getInt("quantidadeAdulto"),
+//					rs.getInt("quantidadeCrianca"),
+//					new AcomodacaoDAO().getById(rs.getInt("acomodacao_id_acomodacao")));
+//		}
+//		
+//		if(r != null) {
+//			//Adicionar a lista de serviços
 //		}
 //
-//		return contato;
+//		return r;
 //	}
 //
-//	public List<Contato> listAllContato() throws SQLException {
+//	public List<Reserva> listAllReservas() throws SQLException {
 //		Connection conexao = FactoryConnetion.getConnection();
 //		String sql = "SELECT * from contato";
 //		PreparedStatement statement = conexao.prepareStatement(sql);
@@ -88,7 +103,7 @@ public class ReservaDAO {
 //		List<Contato> contatos = new ArrayList<>();
 //
 //		while (rs.next()) {
-//			Contato contato = new Contato(rs.getString("telefonePrincipal"),
+//			Reserva r = new Contato(rs.getString("telefonePrincipal"),
 //					rs.getString("telefoneAuxiliar"),
 //					rs.getString("email"),
 //					rs.getInt("id_contato"));
