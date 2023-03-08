@@ -100,6 +100,8 @@ public class HotelDAO {
 			Hotel hotel = new Hotel(rs.getInt("id_hotel"), rs.getString("nome"),
 					new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
 					new ContatoDAO().getById(rs.getInt("contato_id_contato")));
+			
+			hoteis.add(hotel);
 		}
 
 		if (hoteis != null && !hoteis.isEmpty()) {
