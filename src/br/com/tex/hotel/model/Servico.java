@@ -11,35 +11,59 @@ import java.util.Objects;
 public class Servico {
 
 	private Integer id;
-	private String servico;
+	private String descricao;
 	private BigDecimal preco;
+	private int hotel_id_hotel;
+	private int reserva_id_reserva;
 
-	public Servico() {
-	}
-
-	public Servico(String servico, BigDecimal preco) {
-		this.servico = servico;
+	
+	
+	
+   public Servico(String descricao, BigDecimal preco, int hotel_id_hotel, int reserva_id_reserva) {
+		this.descricao= descricao;
 		this.preco = preco;
+		this.hotel_id_hotel = hotel_id_hotel;
+		this.reserva_id_reserva = reserva_id_reserva;
 	}
+	
+   
+   public Servico(Integer id, String descricao, BigDecimal preco, int hotel_id_hotel, int reserva_id_reserva) {
+	this.id = id;
+	this.descricao = descricao;
+	this.preco = preco;
+	this.hotel_id_hotel = hotel_id_hotel;
+	this.reserva_id_reserva = reserva_id_reserva;
+}
 
-	public Servico(Integer id, String servico, BigDecimal preco) {
+
+public Servico(Integer id) {
 		this.id = id;
-		this.servico = servico;
-		this.preco = preco;
+		
+		
 	}
+	
+
+	
 
 	public Integer getId() {
 		return id;
 	}
 
-	public String getServico() {
-		return servico;
+	public String getDescricao() {
+		return descricao;
 	}
 
 	public BigDecimal getPreco() {
 		return preco;
 	}
-
+	
+	public int getHotel_id_hotel() {
+		return hotel_id_hotel;
+	}
+	
+	public int getReserva_id_reserva() {
+		return reserva_id_reserva;
+	}
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -59,7 +83,7 @@ public class Servico {
 
 	@Override
 	public String toString() {
-		return "Servico [id=" + id + ", servico=" + servico + ", preco=" + preco + "]";
+		return "Servico [id=" + id + ", descricao=" + descricao + ", preco=" + preco + "]";
 	}
 
 }
