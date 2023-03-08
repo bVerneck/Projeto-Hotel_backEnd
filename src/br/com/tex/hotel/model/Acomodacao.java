@@ -50,6 +50,10 @@ public class Acomodacao {
 		this.hotel = hotel;
 	}
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public boolean isQuartoLivre() {
 		return quartoLivre;
 	}
@@ -80,6 +84,10 @@ public class Acomodacao {
 
 	public Hotel getHotel() {
 		return hotel;
+	}
+
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
 	}
 
 	@Override

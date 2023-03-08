@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,12 +15,12 @@ import br.com.tex.hotel.model.Endereco;
 
 public class EnderecoDAO {
 
-	public void inserir(Endereco endereco) throws SQLException {
+	public Integer inserir(Endereco endereco) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 
 		String sql = "INSERT INTO endereco (tipoLogradouro, logradouro, numeroResidencial,"
 				+ " complemento, bairro, cidade," + " estado, pais, cep) " + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		PreparedStatement statement = conexao.prepareStatement(sql);
+		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
 		statement.setString(1, endereco.getTipoLogradouro().getDescricao());
 		statement.setString(2, endereco.getLogradouro());
@@ -31,10 +32,20 @@ public class EnderecoDAO {
 		statement.setString(8, endereco.getPais());
 		statement.setString(9, endereco.getCep());
 
-		statement.execute();
+		statement.executeUpdate();
 
+		ResultSet rs = statement.getGeneratedKeys();
+
+		int ultimoId = 0;
+		while (rs.next()) {
+			ultimoId = rs.getInt(1);
+		}
+
+		rs.close();
 		statement.close();
 		conexao.close();
+
+		return ultimoId;
 	}
 
 	public void alterar(Endereco endereco) throws SQLException {
@@ -87,17 +98,15 @@ public class EnderecoDAO {
 		Endereco endereco = null;
 
 		while (rs.next()) {
-			 endereco = new Endereco(id,
-					TipoLogradouro.valueOf(TipoLogradouro.class, rs.getString("tipoLogradouro")),
-					rs.getString("logradouro"),
-					rs.getInt("numeroResidencial"),
-					rs.getString("complemento"),
-					rs.getString("cep"),
-					rs.getString("bairro"),
-					rs.getString("cidade"),
-					Estado.fromUF("estado"),
+			endereco = new Endereco(id, TipoLogradouro.valueOf(TipoLogradouro.class, rs.getString("tipoLogradouro")),
+					rs.getString("logradouro"), rs.getInt("numeroResidencial"), rs.getString("complemento"),
+					rs.getString("cep"), rs.getString("bairro"), rs.getString("cidade"), Estado.fromUF("estado"),
 					rs.getString("pais"));
 		}
+		
+		rs.close();
+		statement.close();
+		conexao.close();
 
 		return endereco;
 	}
@@ -114,17 +123,16 @@ public class EnderecoDAO {
 		while (rs.next()) {
 			Endereco endereco = new Endereco(rs.getInt("id_endereco"),
 					TipoLogradouro.valueOf(TipoLogradouro.class, rs.getString("tipoLogradouro")),
-					rs.getString("logradouro"),
-					rs.getInt("numeroResidencial"),
-					rs.getString("complemento"),
-					rs.getString("cep"),
-					rs.getString("bairro"),
-					rs.getString("cidade"),
-					Estado.fromUF("estado"),
+					rs.getString("logradouro"), rs.getInt("numeroResidencial"), rs.getString("complemento"),
+					rs.getString("cep"), rs.getString("bairro"), rs.getString("cidade"), Estado.fromUF("estado"),
 					rs.getString("pais"));
 
 			enderecos.add(endereco);
 		}
+		
+		rs.close();
+		statement.close();
+		conexao.close();
 
 		return enderecos;
 	}

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,20 +13,30 @@ import br.com.tex.hotel.model.Contato;
 
 public class ContatoDAO {
 
-	public void inserir(Contato contato) throws SQLException {
+	public Integer inserir(Contato contato) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 
 		String sql = "INSERT INTO contato (telefonePrincipal, telefoneAuxiliar, email) VALUES(?, ?, ?)";
-		PreparedStatement statement = conexao.prepareStatement(sql);
+		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
 		statement.setString(1, contato.getTelefonePrincipal());
 		statement.setString(2, contato.getTelefoneAuxiliar());
 		statement.setString(3, contato.getEmail());
 
-		statement.execute();
-
+		statement.executeUpdate();
+		
+		ResultSet rs = statement.getGeneratedKeys();
+		
+		int ultimoId=0;
+		while(rs.next()) {
+			ultimoId=  rs.getInt(1);
+		}
+		
+		rs.close();
 		statement.close();
 		conexao.close();
+		
+		return ultimoId;
 	}
 
 	public void alterar(Contato contato) throws SQLException {
@@ -74,6 +85,10 @@ public class ContatoDAO {
 					rs.getString("email"),
 					rs.getInt("id_contato"));
 		}
+		
+		rs.close();
+		statement.close();
+		conexao.close();
 
 		return contato;
 	}
@@ -95,6 +110,10 @@ public class ContatoDAO {
 
 			contatos.add(contato);
 		}
+		
+		rs.close();
+		statement.close();
+		conexao.close();
 
 		return contatos;
 	}

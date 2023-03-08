@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,20 +13,30 @@ import br.com.tex.hotel.model.Hotel;
 
 public class HotelDAO {
 
-	public void inserir(Hotel hotel) throws SQLException {
+	public Integer inserir(Hotel hotel) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 
 		String sql = "INSERT INTO hotel (nome, contato_id_contato, endereco_id_endereco) VALUES(?, ?, ?)";
-		PreparedStatement statement = conexao.prepareStatement(sql);
+		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
 		statement.setString(1, hotel.getNome());
 		statement.setInt(2, hotel.getContato().getId());
 		statement.setInt(3, hotel.getEndereco().getId());
 
-		statement.execute();
+		statement.executeUpdate();
 
+		ResultSet rs = statement.getGeneratedKeys();
+
+		int ultimoId = 0;
+		while (rs.next()) {
+			ultimoId = rs.getInt(1);
+		}
+
+		rs.close();
 		statement.close();
 		conexao.close();
+
+		return ultimoId;
 	}
 
 	public void alterar(Hotel hotel) throws SQLException {
@@ -69,8 +80,7 @@ public class HotelDAO {
 		Hotel hotel = null;
 
 		while (rs.next()) {
-			hotel = new Hotel(rs.getString("nome"),
-					new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
+			hotel = new Hotel(rs.getString("nome"), new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
 					new ContatoDAO().getById(rs.getInt("contato_id_contato")));
 		}
 
@@ -87,18 +97,23 @@ public class HotelDAO {
 		List<Hotel> hoteis = new ArrayList<>();
 
 		while (rs.next()) {
-			Hotel hotel = new Hotel(rs.getInt("id_hotel"),
-					rs.getString("nome"),
+			Hotel hotel = new Hotel(rs.getInt("id_hotel"), rs.getString("nome"),
 					new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
 					new ContatoDAO().getById(rs.getInt("contato_id_contato")));
+			
+			hoteis.add(hotel);
 		}
-		
-		if(hoteis != null && !hoteis.isEmpty()) {
+
+		if (hoteis != null && !hoteis.isEmpty()) {
 			for (Hotel hotel : hoteis) {
 				hotel.setFuncionarios(new FuncionarioDAO().listFuncionariosByHotel(hotel.getId()));
 				hotel.setAcomodacoes(new AcomodacaoDAO().listAcomodacaoByHotel(hotel.getId()));
 			}
 		}
+		
+		rs.close();
+		statement.close();
+		conexao.close();
 
 		return hoteis;
 	}
