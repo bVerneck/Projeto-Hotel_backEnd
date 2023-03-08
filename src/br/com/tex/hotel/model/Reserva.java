@@ -89,6 +89,10 @@ public class Reserva {
 		return id;
 	}
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public LocalDate getDataCheckIn() {
 		return dataCheckIn;
 	}
