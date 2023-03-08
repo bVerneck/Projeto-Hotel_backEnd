@@ -85,6 +85,10 @@ public class ContatoDAO {
 					rs.getString("email"),
 					rs.getInt("id_contato"));
 		}
+		
+		rs.close();
+		statement.close();
+		conexao.close();
 
 		return contato;
 	}
@@ -106,6 +110,10 @@ public class ContatoDAO {
 
 			contatos.add(contato);
 		}
+		
+		rs.close();
+		statement.close();
+		conexao.close();
 
 		return contatos;
 	}

@@ -110,6 +110,10 @@ public class HotelDAO {
 				hotel.setAcomodacoes(new AcomodacaoDAO().listAcomodacaoByHotel(hotel.getId()));
 			}
 		}
+		
+		rs.close();
+		statement.close();
+		conexao.close();
 
 		return hoteis;
 	}

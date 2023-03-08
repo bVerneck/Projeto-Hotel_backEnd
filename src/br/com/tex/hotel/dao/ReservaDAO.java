@@ -97,6 +97,10 @@ public class ReservaDAO {
 												
 		}
 
+		rs.close();
+		statement.close();
+		conexao.close();
+		
 		return reserva;
 	}
 
@@ -119,6 +123,10 @@ public class ReservaDAO {
 
 			reservas.add(reserva);
 		}
+		
+		rs.close();
+		statement.close();
+		conexao.close();
 
 		return reservas;
 	}
@@ -148,6 +156,10 @@ public class ReservaDAO {
 
 			reservas.add(reserva);
 		}
+		
+		rs.close();
+		statement.close();
+		conexao.close();
 
 		return reservas;
 	}

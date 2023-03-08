@@ -94,6 +94,10 @@ public class ClienteDAO {
 					new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")));
 		}
 
+		rs.close();
+		statement.close();
+		conexao.close();
+		
 		return cliente;
 	}
 
@@ -115,6 +119,10 @@ public class ClienteDAO {
 			clientes.add(cliente);
 		}
 
+		rs.close();
+		statement.close();
+		conexao.close();
+		
 		return clientes;
 	}
 }

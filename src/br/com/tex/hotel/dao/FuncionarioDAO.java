@@ -99,6 +99,10 @@ public class FuncionarioDAO {
 					new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
 					new HotelDAO().getById(rs.getInt("hotel_id_hotel")));
 		}
+		
+		rs.close();
+		statement.close();
+		conexao.close();
 
 		return funcionario;
 	}
@@ -121,6 +125,10 @@ public class FuncionarioDAO {
 
 			funcionarios.add(funcionario);
 		}
+		
+		rs.close();
+		statement.close();
+		conexao.close();
 
 		return funcionarios;
 	}
@@ -143,6 +151,10 @@ public class FuncionarioDAO {
 
 			funcionarios.add(funcionario);
 		}
+		
+		rs.close();
+		statement.close();
+		conexao.close();
 
 		return funcionarios;
 	}

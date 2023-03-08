@@ -103,6 +103,10 @@ public class EnderecoDAO {
 					rs.getString("cep"), rs.getString("bairro"), rs.getString("cidade"), Estado.fromUF("estado"),
 					rs.getString("pais"));
 		}
+		
+		rs.close();
+		statement.close();
+		conexao.close();
 
 		return endereco;
 	}
@@ -125,6 +129,10 @@ public class EnderecoDAO {
 
 			enderecos.add(endereco);
 		}
+		
+		rs.close();
+		statement.close();
+		conexao.close();
 
 		return enderecos;
 	}

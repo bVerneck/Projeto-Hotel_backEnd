@@ -115,6 +115,10 @@ public class AcomodacaoDAO {
 			quartos.add(acomodacao);
 		}
 
+		rs.close();
+		statement.close();
+		conexao.close();
+
 		return quartos;
 	}
 
@@ -136,6 +140,10 @@ public class AcomodacaoDAO {
 
 			quartos.add(acomodacao);
 		}
+
+		rs.close();
+		statement.close();
+		conexao.close();
 
 		return quartos;
 	}

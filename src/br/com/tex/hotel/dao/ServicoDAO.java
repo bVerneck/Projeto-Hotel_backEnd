@@ -13,8 +13,6 @@ import br.com.tex.hotel.model.Servico;
 
 public class ServicoDAO {
 
-	private PreparedStatement statement;
-
 	public Integer inserir(Servico servico) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 
@@ -81,10 +79,10 @@ public class ServicoDAO {
 	public List<Servico> listServicosPorReserva(int reserva_id_reserva) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 		String sql = "SELECT * from servico WHERE reserva_id_reserva";
-		PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-		preparedStatement.setInt(1, reserva_id_reserva);
+		PreparedStatement statement = conexao.prepareStatement(sql);
+		statement.setInt(1, reserva_id_reserva);
 
-		ResultSet rs = preparedStatement.executeQuery();
+		ResultSet rs = statement.executeQuery();
 
 		List<Servico> servicos = new ArrayList<>();
 
@@ -104,8 +102,8 @@ public class ServicoDAO {
 	public List<Servico> listAllServico() throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 		String sql = "SELECT * from servico";
-		PreparedStatement preparedStatement = conexao.prepareStatement(sql);
-		ResultSet rs = preparedStatement.executeQuery();
+		PreparedStatement statement = conexao.prepareStatement(sql);
+		ResultSet rs = statement.executeQuery();
 
 		List<Servico> servicos = new ArrayList<>();
 
