@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,42 +13,50 @@ import br.com.tex.hotel.model.Acomodacao;
 
 public class AcomodacaoDAO {
 
-	public void inserir(Acomodacao a) throws SQLException {
+	public Integer inserir(Acomodacao acomodacao) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 
 		String sql = "INSERT INTO acomodacao (nome, valorPorAdulto, valorPorCrianca,"
-				+ " tamanho, quartoLivre, hotel_id_hotel)"
-				+ " VALUES(?, ?, ?, ?, ?, ?)";
-		PreparedStatement statement = conexao.prepareStatement(sql);
+				+ " tamanho, quartoLivre, hotel_id_hotel)" + " VALUES(?, ?, ?, ?, ?, ?)";
+		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-		statement.setString(1, a.getNomeAcomodacao());
-		statement.setBigDecimal(2, a.getValorAdulto());
-		statement.setBigDecimal(3, a.getValorCrianca());
-		statement.setBigDecimal(4, a.getTamanhoQuarto());
-		statement.setBoolean(5, a.isQuartoLivre());
-		statement.setInt(6, a.getHotel().getId());
+		statement.setString(1, acomodacao.getNomeAcomodacao());
+		statement.setBigDecimal(2, acomodacao.getValorAdulto());
+		statement.setBigDecimal(3, acomodacao.getValorCrianca());
+		statement.setBigDecimal(4, acomodacao.getTamanhoQuarto());
+		statement.setBoolean(5, acomodacao.isQuartoLivre());
+		statement.setInt(6, acomodacao.getHotel().getId());
 
-		statement.execute();
+		statement.executeUpdate();
 
+		ResultSet rs = statement.getGeneratedKeys();
+
+		int ultimoId = 0;
+		while (rs.next()) {
+			ultimoId = rs.getInt(1);
+		}
+
+		rs.close();
 		statement.close();
 		conexao.close();
+
+		return ultimoId;
 	}
 
-	public void alterar(Acomodacao a) throws SQLException {
+	public void alterar(Acomodacao acomodacao) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 		String sql = "UPDATE acomodacao SET nome= ?, valorPorAdulto= ?, valorPorCrianca= ?,"
-				+ " tamanho= ?, quartoLivre= ?, hotel_id_hotel= ?"
-				+ " WHERE id_acomodacao= ?";
+				+ " tamanho= ?, quartoLivre= ?, hotel_id_hotel= ?" + " WHERE id_acomodacao= ?";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 
-		statement.setString(1, a.getNomeAcomodacao());
-		statement.setBigDecimal(2, a.getValorAdulto());
-		statement.setBigDecimal(3, a.getValorCrianca());
-		statement.setBigDecimal(4, a.getTamanhoQuarto());
-		statement.setBoolean(5, a.isQuartoLivre());
-		statement.setInt(6, a.getHotel().getId());
-		statement.setInt(7, a.getId());
+		statement.setString(1, acomodacao.getNomeAcomodacao());
+		statement.setBigDecimal(2, acomodacao.getValorAdulto());
+		statement.setBigDecimal(3, acomodacao.getValorCrianca());
+		statement.setBigDecimal(4, acomodacao.getTamanhoQuarto());
+		statement.setBoolean(5, acomodacao.isQuartoLivre());
+		statement.setInt(6, acomodacao.getHotel().getId());
+		statement.setInt(7, acomodacao.getId());
 
 		statement.execute();
 
@@ -55,13 +64,13 @@ public class AcomodacaoDAO {
 		conexao.close();
 	}
 
-	public void delete(Acomodacao a) throws SQLException {
+	public void delete(Acomodacao acomodacao) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 		String sql = "DELETE FROM acomodacao WHERE id_acomodacao=?";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 
-		statement.setInt(1, a.getId());
+		statement.setInt(1, acomodacao.getId());
 		statement.execute();
 
 		statement.close();
@@ -76,19 +85,16 @@ public class AcomodacaoDAO {
 
 		ResultSet rs = statement.executeQuery();
 
-		Acomodacao a = null;
+		Acomodacao acomodacao = null;
 
 		while (rs.next()) {
-			a = new Acomodacao(rs.getInt("id_acomodacao"),
-					rs.getString("nome"),
-					rs.getBigDecimal("valorPorAdulto"),
-					rs.getBigDecimal("valorPorCrianca"),
-					rs.getBoolean("quartoLivre"),
-					rs.getBigDecimal("tamanho"),
+			acomodacao = new Acomodacao(rs.getInt("id_acomodacao"), rs.getString("nome"),
+					rs.getBigDecimal("valorPorAdulto"), rs.getBigDecimal("valorPorCrianca"),
+					rs.getBoolean("quartoLivre"), rs.getBigDecimal("tamanho"),
 					new HotelDAO().getById(rs.getInt("hotel_id_hotel")));
 		}
 
-		return a;
+		return acomodacao;
 	}
 
 	public List<Acomodacao> listAllAcomodacao() throws SQLException {
@@ -101,20 +107,17 @@ public class AcomodacaoDAO {
 		List<Acomodacao> quartos = new ArrayList<>();
 
 		while (rs.next()) {
-			Acomodacao a = new Acomodacao(rs.getInt("id_acomodacao"),
-					rs.getString("nome"),
-					rs.getBigDecimal("valorPorAdulto"),
-					rs.getBigDecimal("valorPorCrianca"),
-					rs.getBoolean("quartoLivre"),
-					rs.getBigDecimal("tamanho"),
+			Acomodacao acomodacao = new Acomodacao(rs.getInt("id_acomodacao"), rs.getString("nome"),
+					rs.getBigDecimal("valorPorAdulto"), rs.getBigDecimal("valorPorCrianca"),
+					rs.getBoolean("quartoLivre"), rs.getBigDecimal("tamanho"),
 					new HotelDAO().getById(rs.getInt("hotel_id_hotel")));
-			
-			quartos.add(a);
+
+			quartos.add(acomodacao);
 		}
 
 		return quartos;
 	}
-	
+
 	public List<Acomodacao> listAcomodacaoByHotel(int idHotel) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 		String sql = "SELECT * from acomodacao WHERE hotel_id_hotel=?";
@@ -126,17 +129,15 @@ public class AcomodacaoDAO {
 		List<Acomodacao> quartos = new ArrayList<>();
 
 		while (rs.next()) {
-			Acomodacao a = new Acomodacao(rs.getInt("id_acomodacao"),
-					rs.getString("nome"),
-					rs.getBigDecimal("valorPorAdulto"),
-					rs.getBigDecimal("valorPorCrianca"),
-					rs.getBoolean("quartoLivre"),
-					rs.getBigDecimal("tamanho"),
+			Acomodacao acomodacao = new Acomodacao(rs.getInt("id_acomodacao"), rs.getString("nome"),
+					rs.getBigDecimal("valorPorAdulto"), rs.getBigDecimal("valorPorCrianca"),
+					rs.getBoolean("quartoLivre"), rs.getBigDecimal("tamanho"),
 					new HotelDAO().getById(rs.getInt("hotel_id_hotel")));
-			
-			quartos.add(a);
+
+			quartos.add(acomodacao);
 		}
 
 		return quartos;
 	}
+
 }

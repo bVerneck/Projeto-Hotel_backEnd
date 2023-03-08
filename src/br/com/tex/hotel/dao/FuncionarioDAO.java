@@ -5,57 +5,63 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.com.tex.hotel.base.FactoryConnetion;
-import br.com.tex.hotel.enums.Estado;
-import br.com.tex.hotel.enums.TipoLogradouro;
-import br.com.tex.hotel.model.Contato;
-import br.com.tex.hotel.model.Endereco;
 import br.com.tex.hotel.model.Funcionario;
 
 public class FuncionarioDAO {
 
-	public void inserir(Funcionario f) throws SQLException {
+	public Integer inserir(Funcionario funcionario) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 
 		String sql = "INSERT INTO funcionario (matricula, nome, cpf, salario, dataNascimento, hotel_id_hotel,"
 				+ " endereco_id_endereco, contato_id_contato) " + "VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
-		PreparedStatement statement = conexao.prepareStatement(sql);
+		PreparedStatement statement = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-		statement.setInt(1, f.getMatricula());
-		statement.setString(2, f.getNome());
-		statement.setString(3, f.getCpf());
-		statement.setBigDecimal(4, f.getSalario());
-		statement.setDate(5, Date.valueOf(f.getDataNascimento()));
-		statement.setInt(6, f.getHotel().getId());
-		statement.setInt(7, f.getEndereco().getId());
-		statement.setInt(8, f.getContato().getId());
+		statement.setInt(1, funcionario.getMatricula());
+		statement.setString(2, funcionario.getNome());
+		statement.setString(3, funcionario.getCpf());
+		statement.setBigDecimal(4, funcionario.getSalario());
+		statement.setDate(5, Date.valueOf(funcionario.getDataNascimento()));
+		statement.setInt(6, funcionario.getHotel().getId());
+		statement.setInt(7, funcionario.getEndereco().getId());
+		statement.setInt(8, funcionario.getContato().getId());
 
-		statement.execute();
+		statement.executeUpdate();
 
+		ResultSet rs = statement.getGeneratedKeys();
+
+		int ultimoId = 0;
+		while (rs.next()) {
+			ultimoId = rs.getInt(1);
+		}
+
+		rs.close();
 		statement.close();
 		conexao.close();
+
+		return ultimoId;
 	}
 
-	public void alterar(Funcionario f) throws SQLException {
+	public void alterar(Funcionario funcionario) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 		String sql = "UPDATE funcionario SET matricula= ?, nome= ?, cpf= ?, salario= ?, dataNascimento= ?,"
 				+ " hotel_id_hotel= ?, endereco_id_endereco= ?, contato_id_contato= ? WHERE id_funcionario= ?";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 
-		statement.setInt(1, f.getMatricula());
-		statement.setString(2, f.getNome());
-		statement.setString(3, f.getCpf());
-		statement.setBigDecimal(4, f.getSalario());
-		statement.setDate(5, Date.valueOf(f.getDataNascimento()));
-		statement.setInt(6, f.getHotel().getId());
-		statement.setInt(7, f.getEndereco().getId());
-		statement.setInt(8, f.getContato().getId());
-		statement.setInt(9, f.getId());
+		statement.setInt(1, funcionario.getMatricula());
+		statement.setString(2, funcionario.getNome());
+		statement.setString(3, funcionario.getCpf());
+		statement.setBigDecimal(4, funcionario.getSalario());
+		statement.setDate(5, Date.valueOf(funcionario.getDataNascimento()));
+		statement.setInt(6, funcionario.getHotel().getId());
+		statement.setInt(7, funcionario.getEndereco().getId());
+		statement.setInt(8, funcionario.getContato().getId());
+		statement.setInt(9, funcionario.getId());
 
 		statement.execute();
 
@@ -63,13 +69,13 @@ public class FuncionarioDAO {
 		conexao.close();
 	}
 
-	public void delete(Funcionario f) throws SQLException {
+	public void delete(Funcionario funcionario) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 		String sql = "DELETE FROM funcionario WHERE id_funcionario=?";
 
 		PreparedStatement statement = conexao.prepareStatement(sql);
 
-		statement.setInt(1, f.getId());
+		statement.setInt(1, funcionario.getId());
 		statement.execute();
 
 		statement.close();
@@ -84,20 +90,17 @@ public class FuncionarioDAO {
 
 		ResultSet rs = statement.executeQuery();
 
-		Funcionario f = null;
+		Funcionario funcionario = null;
 
 		while (rs.next()) {
-			f = new Funcionario(rs.getInt("id_funcionario"),
-					rs.getString("nome"),
-					rs.getString("cpf"), 
-					rs.getDate("dataNascimento").toLocalDate(),
-					rs.getBigDecimal("salario"),
+			funcionario = new Funcionario(rs.getInt("id_funcionario"), rs.getString("nome"), rs.getString("cpf"),
+					rs.getDate("dataNascimento").toLocalDate(), rs.getBigDecimal("salario"),
 					new ContatoDAO().getById(rs.getInt("contato_id_contato")),
 					new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
 					new HotelDAO().getById(rs.getInt("hotel_id_hotel")));
 		}
 
-		return f;
+		return funcionario;
 	}
 
 	public List<Funcionario> listAllFuncionario() throws SQLException {
@@ -110,21 +113,18 @@ public class FuncionarioDAO {
 		List<Funcionario> funcionarios = new ArrayList<>();
 
 		while (rs.next()) {
-			Funcionario f = new Funcionario(rs.getInt("id_funcionario"),
-					rs.getString("nome"),
-					rs.getString("cpf"), 
-					rs.getDate("dataNascimento").toLocalDate(),
-					rs.getBigDecimal("salario"),
+			Funcionario funcionario = new Funcionario(rs.getInt("id_funcionario"), rs.getString("nome"),
+					rs.getString("cpf"), rs.getDate("dataNascimento").toLocalDate(), rs.getBigDecimal("salario"),
 					new ContatoDAO().getById(rs.getInt("contato_id_contato")),
 					new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
 					new HotelDAO().getById(rs.getInt("hotel_id_hotel")));
-			
-			funcionarios.add(f);
+
+			funcionarios.add(funcionario);
 		}
 
 		return funcionarios;
 	}
-	
+
 	public List<Funcionario> listFuncionariosByHotel(int idHotel) throws SQLException {
 		Connection conexao = FactoryConnetion.getConnection();
 		String sql = "SELECT * from funcionario WHERE hotel_id_hotel";
@@ -135,16 +135,13 @@ public class FuncionarioDAO {
 		List<Funcionario> funcionarios = new ArrayList<>();
 
 		while (rs.next()) {
-			Funcionario f = new Funcionario(rs.getInt("id_funcionario"),
-					rs.getString("nome"),
-					rs.getString("cpf"), 
-					rs.getDate("dataNascimento").toLocalDate(),
-					rs.getBigDecimal("salario"),
+			Funcionario funcionario = new Funcionario(rs.getInt("id_funcionario"), rs.getString("nome"),
+					rs.getString("cpf"), rs.getDate("dataNascimento").toLocalDate(), rs.getBigDecimal("salario"),
 					new ContatoDAO().getById(rs.getInt("contato_id_contato")),
 					new EnderecoDAO().getById(rs.getInt("endereco_id_endereco")),
 					new HotelDAO().getById(rs.getInt("hotel_id_hotel")));
-			
-			funcionarios.add(f);
+
+			funcionarios.add(funcionario);
 		}
 
 		return funcionarios;
