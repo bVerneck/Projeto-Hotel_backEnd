@@ -2,6 +2,8 @@ package br.com.tex.hotel.util.validacoes;
 
 import java.util.InputMismatchException;
 
+import br.com.tex.hotel.util.exeption.ExeptionUtil;
+
 /**
  * 
  * @author willian
@@ -13,51 +15,40 @@ public class ValidaCPF {
 	 * 
 	 * @param cpf Cpf da pessoa
 	 * @return Se cpf é válido retorna true, caso contrário, retorna false
+	 * @throws Exception
 	 */
-	public static boolean cpfValido(String cpf) {
+	public static boolean cpfValido(String cpf) throws Exception {
 
-		if (cpf.trim().isEmpty())
-			return false;
+		if (cpf.trim().isEmpty()) {
+			throw new ExeptionUtil("CPF vazio");
+		}
 
 		cpf = (((cpf.replace("-", "")).replace(".", "")).replace("/", ""));
 
-		if (cpf.trim().length() < 11)
-			return false;
+		if (cpf.trim().length() < 11) {
+			throw new ExeptionUtil("CPF imcompleto");
+		}
 
-		if (isCpfTemLetraOuTodosDigitosIguais(cpf))
-			return false;
+		verificaSeCpfTemLetraOuTodosDigitosIguais(cpf);
 
 		return isDigitosValidos(cpf);
-
 	}
 
-	/**
-	 * 
-	 * @param cpf da pessoa
-	 * @return	Retorna true caso o cpf informado contenha letras ou todos os digitos repetidos
-	 */
-	private static boolean isCpfTemLetraOuTodosDigitosIguais(String cpf) {
+	private static void verificaSeCpfTemLetraOuTodosDigitosIguais(String cpf) throws ExeptionUtil, Exception {
 		for (int i = 0; i < cpf.length(); i++) {
 
 			char firstLetter = cpf.charAt(0);
 			char c = cpf.charAt(i);
 
 			if (Character.isLetter(c))
-				return true;
+				throw new ExeptionUtil("CPF não pode conter letras");
 
 			if (firstLetter != c)
-				return false;
+				return;
 
-			return true;
 		}
-		return true;
 	}
 
-	/**
-	 * 
-	 * @param cpf
-	 * @return	Retorna true caso os dígitos verificadores sejam válidos
-	 */
 	private static boolean isDigitosValidos(String cpf) {
 		int dig10, dig11;
 		int soma, resto, num, peso;
