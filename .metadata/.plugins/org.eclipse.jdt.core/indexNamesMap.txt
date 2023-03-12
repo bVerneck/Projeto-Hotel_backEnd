@@ -1,3 +1,0 @@
-INDEX VERSION 1.131
-file:/C:/Users/joaor/OneDrive/Documentos/dev/workspace/Projeto%20Hotel/.metadata/.plugins/org.eclipse.jdt.core/1865797976.index
-meta_index
